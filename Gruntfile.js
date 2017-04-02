@@ -36,7 +36,7 @@ module.exports = function(grunt) {
         },
         watch: {
             development: {
-                files: ['src/less/*.less', 'src/js/*.js', 'src/index.php'],
+                files: ['src/less/**/*.less', 'src/js/**/*.js', 'src/**/index.php'],
                 tasks: [ "webpack", "copy:development"]
             }
         },
