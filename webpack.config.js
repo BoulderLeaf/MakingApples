@@ -9,6 +9,17 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.html$/,
+                use: [ {
+                    loader: 'html-loader',
+                    options: {
+                    minimize: true,
+                    removeComments: false,
+                    collapseWhitespace: false
+                    }
+                }],
+            },
+            {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
                 loader: 'file-loader?name=public/fonts/[name].[ext]'
             },
