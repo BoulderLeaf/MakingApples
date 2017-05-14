@@ -1,10 +1,11 @@
 import 'angular';
+import uirouter from 'angular-ui-router';
 
-import makingApplesController from './makingApples.controller.js';
-import makingApplesService from './makingApples.service.js';
+import routing from './makingApples.config';
+import home from './components/home';
 
-import creator from './components/creator/';
+import creator from './components/creator';
+import header from './components/header';
 
-export default angular.module('makingApples', [])
-.controller('makingApplesController', makingApplesController)
-.factory('makingApples', makingApplesService);
+angular.module('makingApples', [uirouter, home, creator])
+  .config(routing);

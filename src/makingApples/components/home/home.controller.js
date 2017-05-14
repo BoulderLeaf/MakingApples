@@ -1,5 +1,5 @@
-export default class makingApplesController {
-  constructor(makingApples) {
+export default class HomeController {
+  constructor() {
     this.name = 'World';
   }
 

@@ -1,10 +1,10 @@
 import 'angular';
 import uirouter from 'angular-ui-router';
-import controller from './creator.controller.js';
-import service from './creator.service.js';
-import routing from './creator.routes.js';
+import routing from './creator.routes';
+import levelEdit from '../levelEdit';
+import CreatorController from './creator.controller';
 
-export default angular.module('creator', [uirouter])
+export default angular.module('makingApples.creator', [uirouter, levelEdit, uirouter])
 .config(routing)
-.controller('creatorController', controller)
-.factory('creatorService', service);
+.controller('CreatorController', CreatorController)
+.name;
