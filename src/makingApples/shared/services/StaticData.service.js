@@ -2,7 +2,9 @@ import angular from 'angular';
 
 class StaticData {
   constructor() {
-    this.names = 'name';
+    this.GHUserName = 'colincove';
+      this.GHRepo = 'colincove';
+      this.GHPassword = 'colincove';
   }
 
   getName() {
