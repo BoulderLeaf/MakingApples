@@ -23,7 +23,7 @@ class GitHub {
 
 	get(path, done, error)
 	{
-		this.repo.getContents(config.ref, this.dataRoot+path, false).then(done, error);
+		this.repo.getContents(config.ref, this.dataRoot+path, true).then(done, error);
 	}
 	
 	delete(path, cb)

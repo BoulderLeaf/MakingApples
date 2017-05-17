@@ -1,5 +1,7 @@
+<button ng-click="creator.createNewLevel()" >Create New</button>
+<button ng-click="creator.save()" >Save</button>
 <nav>
-    <a ng-repeat="level in levels" ui-sref="home.create.edit({levelId: level.id})">{{level.name}}</a>
+    <a ng-repeat="level in levels" ui-sref="home.create.edit({levelId: level.name})">{{level.name}}</a>
 </nav>
 {{testName}}
 <section ui-view></section>
