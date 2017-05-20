@@ -1,7 +1,13 @@
-<button ng-click="creator.createNewLevel()" >Create New</button>
-<button ng-click="creator.save()" >Save</button>
-<nav>
-    <a ng-repeat="level in levels" ui-sref="home.create.edit({levelId: level.name})">{{level.name}}</a>
+<nav class="secondary">
+<button ng-click="creator.createNewLevel()" class="btn btn-default" >Create New</button>
+<!-- Single button -->
+<div class="btn-group" uib-dropdown is-open="status.isopen">
+	<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+		Level Select <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+		<li ng-repeat="level in levels" role="menuitem" ui-sref="home.create.edit({levelId: level.name})"><a href="#">{{level.name}}</a></li>
+	</ul>
+</div>
 </nav>
-{{testName}}
-<section ui-view></section>
+<section class="secondary-content" ui-view></section>

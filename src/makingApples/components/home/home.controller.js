@@ -1,9 +1,14 @@
 export default class HomeController {
-  constructor() {
-    this.name = 'World';
-  }
+	constructor($scope) {
+		this.name = 'World';
 
-  changeName() {
-    this.name = 'angular-tips';
-  }
+		$scope.tabs = [
+			{name:"Home", state:"home"},
+			{name:"Edit Levels", state:"home.create"}
+		];
+	}
+
+	changeName() {
+		this.name = 'angular-tips';
+	}
 }

@@ -1,4 +1,53 @@
+@import '../../node_modules/bootstrap/less/bootstrap.less';
 @import "config/colours.less";
     
 @number: 10rem;
 body{background-color:red;}
+
+@headerHeight: 4.2rem;
+@footerHeight: 4.5rem;
+@secondaryNavHeight:4.5rem;
+
+header{
+	height:@headerHeight;
+	background-color:@gray-lighter;
+}
+
+footer {
+	position: absolute;
+	bottom:0;
+	left: 0;
+	right:0;
+	height:@footerHeight;
+	background-color:@gray-lighter;
+}
+
+.primary-content{
+	position: absolute;
+	bottom:@footerHeight;
+	left: 0;
+	right:0;
+	top: @headerHeight;
+	
+	background-color: @gray-dark;
+}
+
+.secondary-content{
+	position: absolute;
+	bottom:0;
+	left: 0;
+	right:0;
+	top: @secondaryNavHeight;
+	
+	padding: @padding-base-vertical @padding-base-horizontal;
+}
+
+nav.secondary{
+	height: @secondaryNavHeight;
+	position: absolute;
+	top:0;
+	left: 0;
+	right:0;
+	background-color:@gray;
+	padding: @padding-base-vertical @padding-base-horizontal;
+}

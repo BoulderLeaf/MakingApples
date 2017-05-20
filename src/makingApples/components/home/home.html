@@ -1,8 +1,7 @@
 <header>
-    <nav>
-        <a>Project</a>
-        <a ui-sref="home.create">Create</a>
-    </nav>
+	<uib-tabset active="activeJustified" justified="true">
+		<uib-tab ng-repeat="tab in tabs" index="{$index}"  heading="{{tab.name}}" ui-sref="{{tab.state}}"></uib-tab>
+	</uib-tabset>
 </header>
-<section ui-view></section>
+<section class="primary-content" ui-view></section>
 <footer></footer>

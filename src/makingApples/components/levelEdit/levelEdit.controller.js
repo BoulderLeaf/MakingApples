@@ -7,8 +7,10 @@ export default class LevelEditController
 		this.$scope.id = this.id;
 		this.github = github;
 		this.data = {};
-		this.get();
 		this.dir = "levels/";
+		
+		//get level
+		this.get();
 	}
 	
 	onLoad(response)
