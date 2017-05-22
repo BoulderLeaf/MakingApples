@@ -1,0 +1,21 @@
+.creator-content{
+	.tool-bar{
+		position: absolute;
+		right:0;
+		width: 14rem;
+		bottom:@padding-base-vertical*2;
+		top:@padding-base-vertical * 2;
+		overflow-y: auto;
+		z-index:1;
+		
+		background-color: @gray;
+	}
+	.canvas-container{
+		.fill-parent();
+		overflow-y: auto;
+	}
+	canvas{
+		margin:@padding-base-vertical*2 auto;
+		display:block;
+	}
+}

@@ -4,7 +4,8 @@ export default class HomeController {
 
 		$scope.tabs = [
 			{name:"Home", state:"home"},
-			{name:"Edit Levels", state:"home.create"}
+			{name:"Edit Levels", state:"home.create"},
+			{name:"Create Objects", state:"home.createObjects"}
 		];
 	}
 

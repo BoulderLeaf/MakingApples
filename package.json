@@ -4,6 +4,9 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
+    "fabric": "^1.7.11",
+    "fabric-browserify": "^1.4.13",
+    "fabric-webpack": "^1.6.0-rc.1",
     "gen-run": "^0.1.2",
     "github": "^9.2.0",
     "github-api": "^3.0.0",
