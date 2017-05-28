@@ -6,13 +6,72 @@ class Enums {
 	constructor(github)
 	{
 		this.github = github;
-		this.dir="";
+		this.file = "enums.json";
 		this.enums = null;
+		this.history = [];
 	}
 	
-	createNew()
+	_saveHistory()
 	{
-		
+		this.history.push(JSON.parse(JSON.stringify(this.enums)));
+	}
+	
+	undo()
+	{
+		this.enums = this.history.pop();
+	}
+	
+	addValue(enumId, key, value)
+	{
+		if(this.enums[enumId] === undefined){return;}
+		if(this.enums[enumId][key] !== undefined){return;}
+		this._saveHistory();
+		this.enums[enumId][key] = value;
+	}
+	
+	deleteValue(enumId, key)
+	{
+		if(this.enums[enumId] === undefined){return;}
+		this._saveHistory();
+		delete this.enums[enumId][key];
+	}
+	
+	createNew(enumId)
+	{
+		if(this.enums[enumId] !== undefined){return;}
+		this._saveHistory();
+		this.enums[enumId] = {};
+	}
+	
+	delete(enumId)
+	{
+		if(this.enums[enumId] === undefined){return;}
+		this._saveHistory();
+		delete this.enums[enumId];
+	}
+	
+	save()
+	{
+		return new Promise(function(resolve, reject){
+			
+			function onFetchSuccess(response)
+			{
+				resolve(this.enums);
+			}
+			
+			function onGenerateSuccess(response)
+			{
+				this.github.get(this.file, onFetchSuccess.bind(this), reject);
+			}
+			
+			this.github.put(
+				this.file,
+				JSON.stringify(this.enums),
+				"Creating new enum",
+				onGenerateSuccess.bind(this),
+				reject
+			);
+		}.bind(this));
 	}
 	
 	getEnums()
@@ -33,7 +92,7 @@ class Enums {
 			function generateEnums()
 			{
 				this.github.put(
-					this.dir+"enums.json",
+					this.file,
 					JSON.stringify({}),
 					"Generating Enums Data",
 					onGenerateSuccess.bind(this),
@@ -43,7 +102,7 @@ class Enums {
 
 			function fetchEnums()
 			{
-				this.github.get(this.dir+"enums.json", onFetchSuccess.bind(this), generateEnums.bind(this));
+				this.github.get(this.file, onFetchSuccess.bind(this), generateEnums.bind(this));
 			}
 			
 			if(this.enums === null)

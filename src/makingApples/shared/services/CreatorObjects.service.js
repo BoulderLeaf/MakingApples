@@ -9,9 +9,33 @@ class CreatorObjects {
 		this.file = "creatorObjects.json";
 	}
 	
-	createNew()
+	createNew(id, def)
 	{
-		
+		return new Promise(function(resolve, reject){
+			
+			if(this.objects && this.objects[id] === null)
+			{
+				this.objects[id] = def;
+				this.save().then(resolve).catch(reject);
+			}
+			else
+			{
+				reject();
+			}
+			
+		}.bind(this));
+	}
+	
+	save(){
+		return new Promise(function(resolve, reject){
+			this.github.put(
+				this.file,
+				JSON.stringify(this.objects),
+				"Generating Creator Objects",
+				resolve,
+				reject
+			);
+		}.bind(this));
 	}
 	
 	getObjects()

@@ -75,7 +75,6 @@ module.exports = function(grunt) {
         copy: {
             build: {
                 files: [
-                  {src: ['tmp/bundle1.js'], dest: 'dist/js/bundle1.js'},
                   {src: ['src/index.php'], dest: 'dist/index.php'}
                 ]
             },
