@@ -40,9 +40,6 @@ export default class EnumEditorController {
 	}
 	
 	save(){
-		
-		
-		
 		this.interactionDisabled = true;
 		this.enums.save().then(function(enums){
 			this.interactionDisabled = false;

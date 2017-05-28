@@ -1,5 +1,34 @@
-<nav class="secondary">
-	Create Objects
-<button ng-click="creatorObjects.newObject()" class="btn btn-default" >Create New</button>
+<nav class="secondary form-inline">
+	<div class="input-group">
+		<input type="text" ng-disabled="createObjects.interactionDisabled" class="form-control" ng-model="createObjects.newObjectInput"/>
+		<span class="input-group-btn">
+			<button ng-click="createObjects.createNew()" class="btn btn-default" ng-disabled="createObjects.interactionDisabled" ><i class="glyphicon glyphicon-plus"></i></button>
+		</span>
+	</div>
+	
+	<button ng-click="createObjects.save()" class="btn btn-primary pull-right" ng-disabled="createObjects.interactionDisabled" >Save</button>
 </nav>
-<section class="secondary-content" ui-view></section>
+<section class="secondary-content">
+	<ul class="list-group">
+		<form ng-repeat="(key, value) in createObjects.objects" class="list-group-item">
+			<label><h4>{{key}}</h4></label>
+			<div class="input-group">
+				<input type="text" ng-disabled="createObjects.interactionDisabled" class="form-control" ng-model="createObjects.inputs.newParamName"/>
+				<span class="input-group-btn">
+					<div class="btn-group" uib-dropdown is-open="status.isopen">
+						<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+							{{createObjects.inputs.selectedType}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+							<li ng-repeat="(enumKey, enumValue) in createObjects.enumData.ObjectParamTypes" role="menuitem" ><a href="#" ng-click="createObjects.dropdownSelectType(enumKey)">{{enumKey}}</a></li>
+						</ul>
+					</div>
+					<button class="btn btn-default" ng-disabled="createObjects.interactionDisabled" ng-click="createObjects.createNewProperty(key)" ><i class="glyphicon glyphicon-plus"></i></button>
+				</span>
+			</div>
+			<ul class="list-group">
+				<li ng-repeat="param in value.params"><label>{{param.named}}:{{param.type}}:{{param.value}}:{{param.valueKey}}</label></li>
+			</ul>
+		</form>
+	</ul>
+</section>

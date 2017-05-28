@@ -5,8 +5,9 @@ module.exports = {
   entry: './src/js/script.js',
   output: {
     filename: 'bundle1.js',
-    path: path.resolve(__dirname, 'dist')
-  }, 
+    path: path.resolve(__dirname, 'dist'),
+	publicPath:'makingApples/dist/'
+  },
     module: {
         rules: [
              { test: /\.json$/, loader: 'json-loader' },

@@ -1,19 +1,19 @@
 <nav class="secondary form-inline">
 	<input type="text" ng-disabled="enumEditor.interactionDisabled" class="form-control" name="newEnumInput" ng-model="enumEditor.newEnumInput"/>
-	<button ng-click="enumEditor.createNew()" class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ><i class="glyphicon glyphicon-plus"></i>Create New</button>
-	<button ng-click="enumEditor.save()" class="btn btn-primary" ng-disabled="enumEditor.interactionDisabled" >Save</button>
+	<button ng-click="enumEditor.createNew()" class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ><i class="glyphicon glyphicon-plus"></i></button>
+	<button ng-click="enumEditor.save()" class="btn btn-primary pull-right" ng-disabled="enumEditor.interactionDisabled" >Save</button>
 </nav>
 <ul class="list-group secondary-content enum-editor-content">
 	<li class="list-group-item" ng-repeat="enum in enumEditor.enumList" >
 		<form>
 			
 			<label for="inlineFormInput"><h4>{{enum.id}}</h4></label>
-			<button class="btn btn-default pull-right" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.deleteEnum(enum.id)" >Delete</button>
+			<button class="btn btn-default pull-right btn-warning" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.deleteEnum(enum.id)" >Delete</button>
 			
 			<div class="input-group">
 				<input type="text" ng-disabled="enumEditor.interactionDisabled" class="form-control" ng-model="enum.inputs.newEnumName"/>
 				<span class="input-group-btn">
-					<button class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.addKey(enum.id)" >Create New</button>
+					<button class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.addKey(enum.id)" ><i class="glyphicon glyphicon-plus"></i></button>
 				</span>
 			</div>
 		</form>
@@ -23,7 +23,7 @@
 				<div class="input-group">
 					<input type="text" ng-disabled="enumEditor.interactionDisabled"  class="form-control" ng-model="value" ng-change="enumEditor.update_key(enum.id, key, value)"/>
 					<span class="input-group-btn">
-						<button class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.deleteValue(enum.id, key)" >Delete</button>
+						<button class="btn btn-default btn-warning" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.deleteValue(enum.id, key)" >Delete</button>
 					</span>
 				</div>
 			</form>

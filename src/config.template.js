@@ -1,7 +1,7 @@
 export default {
     
     dataRoot:"url/to/root",
-	ref:"branch"
+	ref:"branch",
     
     github:{
         userName:"UserName",

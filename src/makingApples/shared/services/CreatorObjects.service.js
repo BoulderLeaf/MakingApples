@@ -9,30 +9,37 @@ class CreatorObjects {
 		this.file = "creatorObjects.json";
 	}
 	
-	createNew(id, def)
+	createNew(id)
 	{
-		return new Promise(function(resolve, reject){
-			
-			if(this.objects && this.objects[id] === null)
-			{
-				this.objects[id] = def;
-				this.save().then(resolve).catch(reject);
-			}
-			else
-			{
-				reject();
-			}
-			
-		}.bind(this));
+		if(!this.objects && this.objects[id] !== undefined ) {return;}
+		this.objects[id] = {params:{}};
+	}
+	
+	createNewProperty(objectId, type, paramId, value, valueKey)
+	{
+		if(!this.objects || this.objects[objectId] === undefined || this.objects[objectId].params[paramId] !== undefined ) {return;}
+		var param = {type:type, value:0, valueKey:null};
+		this.objects[objectId].params[paramId] = param;
 	}
 	
 	save(){
 		return new Promise(function(resolve, reject){
+			
+			function onFetchSuccess(response)
+			{
+				resolve(this.objects);
+			}
+			
+			function onGenerateSuccess(response)
+			{
+				this.github.get(this.file, onFetchSuccess.bind(this), reject);
+			}
+			
 			this.github.put(
 				this.file,
 				JSON.stringify(this.objects),
 				"Generating Creator Objects",
-				resolve,
+				onGenerateSuccess.bind(this),
 				reject
 			);
 		}.bind(this));
