@@ -1,3 +1,5 @@
+import appleEnums from "../../../enums";
+
 export default class CreateObjectsController {
 	constructor($scope, creatorObjects, enums) {
 		this.creatorObjects = creatorObjects;
@@ -6,11 +8,14 @@ export default class CreateObjectsController {
 		this.objects = {};
 		this.newObjectInput = "new_object_name";
 		this.objectList = [];
+		this.appleEnums = appleEnums;
+		
 		this.inputs = {
 			newParamName:"NewParamName",
 			newParamType:0,
 			selectedType:''
 		}
+		
 		this.objectParamTypes = {};
 		this.enumData = {};
 		
@@ -36,7 +41,7 @@ export default class CreateObjectsController {
 			{
 				this._initEnums(enums);
 				this.interactionDisabled = false;
-				this._updateList();
+				this._updateModel();
 				this.$scope.$applyAsync();
 			}
 			else
@@ -57,7 +62,7 @@ export default class CreateObjectsController {
 		this.enums.save().then(function(enums){
 			this.interactionDisabled = false;
 			this._initEnums(enums);
-			this._updateList();
+			this._updateModel();
 			this.$scope.$applyAsync();
 		}.bind(this));
 	}
@@ -76,7 +81,7 @@ export default class CreateObjectsController {
 	
 	createNew(){
 		this.creatorObjects.createNew(this.newObjectInput);
-		this._updateList();
+		this._updateModel();
 		this.$scope.$applyAsync();
 	}
 	
@@ -88,21 +93,21 @@ export default class CreateObjectsController {
 		
 		switch(selectedType)
 		{
-			case '0':
+			case appleEnums.ObjectParamType.ENUM:
 				value = 0;
 				valueKey = this.objectParamTypes;
 				break;
-			case '1':
+			case appleEnums.ObjectParamType.STRING:
 				value = "";
 				break;
-			case '2':
+			case appleEnums.ObjectParamType.NUMBER:
 				value = 0;
 				break;
 				
 		}
 		
 		this.creatorObjects.createNewProperty(objectId, selectedType, this.inputs.newParamName, value, valueKey)
-		this._updateList();
+		this._updateModel();
 		this.$scope.$applyAsync();
 	}
 	
@@ -117,18 +122,39 @@ export default class CreateObjectsController {
 		this.creatorObjects.save().then(function(objects){
 			this.interactionDisabled = false;
 			this.objects = objects;
-			this._updateList();
+			this._updateModel();
 			this.$scope.$applyAsync();
 		}.bind(this));
 	}
 	
-	_updateList(){
+	_updateModel(){
 		this.objectList.length = 0;
 		this.inputs.objects = {};
 		for(var i in this.objects)
 		{
 			this.objectList.push({id:i, object:this.objects[i]});
+			this.inputs.objects[i] = {params:{}};
+			
+			for(var j in this.objects[i].params)
+			{
+				this.inputs.objects[i].params[j] = {value:this.objects[i].params[j].value, valueKey:this.objects[i].params[j].valueKey}
+			}
 		}
+	}
+	
+	paramValueChange(objectId, paramId, value){
+		this.objects[objectId].params[paramId].value = this.inputs.objects[objectId].params[paramId].value;
+	}
+	
+	paramEnumChange(objectId, paramId, enumId){
+		this.objects[objectId].params[paramId].valueKey = enumId;
+		this.objects[objectId].params[paramId].value = this.enumData[enumId][Object.keys(this.enumData[enumId])[0]];
+		this._updateModel();
+		this.$scope.$applyAsync();
+	}
+	
+	paramEnumValueChange(objectId, paramId, value){
+		this.objects[objectId].params[paramId].value = value;
 	}
 	
 	dropdownSelectType(enumValue){
