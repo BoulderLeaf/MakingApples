@@ -1,5 +1,11 @@
 <section class="tool-bar">
 	<button ng-click="levelEdit.update()" class="btn btn-default">Save</button>
+	<ul  class="list-group">
+		<li class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
+			<img ng-src="{{levelEdit.config.cdn}}objects/{{objectId}}.png"/>
+			<label>{{objectId}}</label>
+		</li>
+	</ul>
 </section>
 <section class="canvas-container">
 	<canvas id="canvas" class="level-canvas"></canvas>

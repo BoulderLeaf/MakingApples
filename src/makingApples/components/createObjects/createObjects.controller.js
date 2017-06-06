@@ -1,4 +1,5 @@
 import appleEnums from "../../../enums";
+import config from "../../../config";
 
 export default class CreateObjectsController {
 	constructor($scope, creatorObjects, enums) {
@@ -9,6 +10,7 @@ export default class CreateObjectsController {
 		this.newObjectInput = "new_object_name";
 		this.objectList = [];
 		this.appleEnums = appleEnums;
+		this.config = config;
 		
 		this.inputs = {
 			newParamName:"NewParamName",
@@ -159,5 +161,16 @@ export default class CreateObjectsController {
 	
 	dropdownSelectType(enumValue){
 		this.inputs.selectedType = enumValue;
+	}
+	
+	deleteParam(objectId, paramId){
+		this.creatorObjects.deleteParam(objectId, paramId);
+		this._updateModel();
+		this.$scope.$applyAsync();
+	}
+	deleteObject(objectId){
+		this.creatorObjects.deleteObject(objectId);
+		this._updateModel();
+		this.$scope.$applyAsync();
 	}
 }

@@ -86,6 +86,16 @@ class CreatorObjects {
 			}
 		}.bind(this));
 	}
+	deleteParam(objectId, paramId)
+	{
+		if(this.objects[objectId] === undefined){return;}
+		delete this.objects[objectId].params[paramId];
+	}
+	
+	deleteObject(objectId)
+	{
+		delete this.objects[objectId];
+	}
 }
 
 export default angular.module('services.creatorObjects', [github])

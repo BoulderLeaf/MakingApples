@@ -2,6 +2,7 @@ export default {
     
     dataRoot:"url/to/root",
 	ref:"branch",
+	cdn:"",
     
     github:{
         userName:"UserName",

@@ -1,10 +1,11 @@
 import $ from "jquery";
 import fabricWebpack from "fabric-webpack";
 var LevelEditToolbar = require("./toolbar").default;
+import config from "../../../config";
 
 export default class LevelEditController
 {
-	constructor($scope, $stateParams, github, enums)
+	constructor($scope, $stateParams, github, enums, creatorObjects)
 	{
 		this.id = $stateParams.levelId;
 		this.$scope = $scope;
@@ -12,9 +13,8 @@ export default class LevelEditController
 		this.github = github;
 		this.data = {};
 		this.dir = "levels/";
-		
-		//get level
-		this.get();
+		this.config = config;
+		this.creatorObjects = creatorObjects;
 		
 		this.$canvas  =$(".level-canvas");
 		this.ctx = this.$canvas[0].getContext('2d');
@@ -22,8 +22,16 @@ export default class LevelEditController
 		this.setupCanvas(this.$canvas, this.ctx);
 		
 		this.fabric = new fabricWebpack.fabric.Canvas('canvas');
-		
-		this.toolbar = new LevelEditToolbar($scope, this.fabric, enums);
+		this._init();
+	}
+	
+	_init()
+	{
+		this.creatorObjects.getObjects().then(function(objects){
+			this.objects = objects;
+			//get level
+			this.get();
+		}.bind(this));
 	}
 	
 	onLoad(response)
