@@ -1,1 +1,1 @@
-{"ObjectParamTypes":{"ENUM":0,"STRING":"1","NUMBER":"2"},"FabricObjectType":{"Line":0,"Circle":"1","Triangle":"2","Ellipse":"3","Rect":"4","Polyline":"5","Polygon":"6","Group":"7","Text":"8","Image":"9","Path":"10"}}
+{"ObjectParamTypes":{"ENUM":0,"STRING":"1","NUMBER":"2"},"FabricObjectType":{"LINE":0,"CIRCLE":"1","TRIANGLE":"2","ELLIPSE":"3","RECT":"4","POLYLINE":"5","POLYGON":"6","GROUP":"7","TEXT":"8","IMAGE":"9","PATH":"10"}}
