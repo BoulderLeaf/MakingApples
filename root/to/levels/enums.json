@@ -1,1 +1,1 @@
-{"ObjectParamTypes":{"ENUM":0,"STRING":"1","NUMBER":"2"},"TestEnum":{"TestValue1":0,"TestValue2":"1"}}
+{"ObjectParamTypes":{"ENUM":0,"STRING":"1","NUMBER":"2"},"FabricObjectType":{"Line":0,"Circle":"1","Triangle":"2","Ellipse":"3","Rect":"4","Polyline":"5","Polygon":"6","Group":"7","Text":"8","Image":"9","Path":"10"}}
