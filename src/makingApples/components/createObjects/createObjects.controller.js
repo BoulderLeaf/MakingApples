@@ -5,6 +5,7 @@ export default class CreateObjectsController {
 	constructor($scope, creatorObjects, enums) {
 		this.creatorObjects = creatorObjects;
 		this.enums = enums;
+		this.levelRegistry = levelRegistry;
 		this.$scope = $scope;
 		this.objects = {};
 		this.newObjectInput = "new_object_name";

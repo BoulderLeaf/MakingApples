@@ -1,12 +1,25 @@
 <nav class="secondary">
-<button ng-click="creator.createNewLevel()" class="btn btn-default" >Create New</button>
+	<button ng-click="creator.createNewLevel()" class="btn btn-default pull-left" >Create New</button>
+	<button ng-click="creator.save()" class="btn btn-default pull-left" >Save</button>
+	<div class="input-group pull-left">
+		<input type="text" ng-disabled="creator.interactionDisabled" class="form-control" ng-model="creator.levelNameInput"/>
+	</div>
+	<div class="input-group pull-right">
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control" ng-model="creator.widthInput"/>
+	</div>
+	<div class="input-group pull-right">
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control" ng-model="creator.heightInput"/>
+	</div>
+	<div class="input-group pull-right">
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="creator.scale"/>
+	</div>
 <!-- Single button -->
 <div class="btn-group" uib-dropdown is-open="status.isopen">
 	<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
 		Level Select <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-		<li ng-repeat="level in levels" role="menuitem" ui-sref="home.create.edit({levelId: level.name})"><a href="#">{{level.name}}</a></li>
+		<li ng-repeat="(levelId, level) in creator.levels" role="menuitem" ui-sref="home.create.edit({levelId: levelId})"><a href="#">{{levelId}}</a></li>
 	</ul>
 </div>
 </nav>

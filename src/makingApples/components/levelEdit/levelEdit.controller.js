@@ -1,95 +1,116 @@
 import $ from "jquery";
+import enums from "../../../enums";
 import fabricWebpack from "fabric-webpack";
+var fabric = fabricWebpack.fabric;
 var LevelEditToolbar = require("./toolbar").default;
 import config from "../../../config";
+import Debug from "../../shared/utils/Debug";
 
 export default class LevelEditController
 {
-	constructor($scope, $stateParams, github, enums, creatorObjects)
+	constructor($scope, $stateParams, enums, creatorObjects, fabricParse, levels, levelRegistry)
 	{
 		this.id = $stateParams.levelId;
 		this.$scope = $scope;
 		this.$scope.id = this.id;
-		this.github = github;
-		this.data = {};
-		this.dir = "levels/";
 		this.config = config;
+		this.fabricParse = fabricParse;
 		this.creatorObjects = creatorObjects;
+		this.levels = levels;
+		this.levelRegistry = levelRegistry;
+		this.objects = {};
+		this.registry = {};
 		
 		this.$canvas  =$(".level-canvas");
 		this.ctx = this.$canvas[0].getContext('2d');
 		
-		this.setupCanvas(this.$canvas, this.ctx);
-		
-		this.fabric = new fabricWebpack.fabric.Canvas('canvas');
 		this._init();
 	}
 	
 	_init()
 	{
+		var fetchCount = 3;
+		
+		function onComplete()
+		{
+			if(--fetchCount <= 0)
+			{
+				this.onLoad();
+			}
+		}
+		
 		this.creatorObjects.getObjects().then(function(objects){
 			this.objects = objects;
-			//get level
-			this.get();
+			onComplete.call(this);
+		}.bind(this));
+		
+		this.levelRegistry.get().then(function(registry){
+			this.registry = registry;
+			onComplete.call(this);
+		}.bind(this));
+		
+		this.levels.get(this.id).then(function(level){
+			this.level = level;
+			onComplete.call(this);
 		}.bind(this));
 	}
 	
-	onLoad(response)
+	onLoad()
 	{
-		this.data = response.data;
+		this.setupCanvas(this.$canvas, this.ctx);
+		
+		this.fabric = new fabric.Canvas('canvas');
+		this.setupFabric(this.fabric);
+		
 		this.$scope.$applyAsync();
 	}
 	
-	handleLoadError(error)
+	loadLevel()
 	{
-		this.generateLevel();
-	}
-	
-	update()
-	{
-		this.save();
-	}
-	
-	get()
-	{
-		this.github.get(this.dir+this.id+".json", this.onLoad.bind(this), this.handleLoadError.bind(this));
+		this.levels.get(this.id).then(function(level){
+			this.onLoad(level);
+		}.bind(this));
 	}
 	
 	save()
 	{
-		this.github.put(
-			this.dir+this.id+".json",
-			JSON.stringify(this.data),
-			"Generating Level Json Data",
-			this.saveComplete.bind(this),
-			this.handleSaveError.bind(this)
-		);
-	}
-	
-	handleSaveError(error)
-	{
-		console.error("Failed!", error);
-	}
-	
-	saveComplete(e)
-	{
-		//Save Complete
-	}
-	
-	generateLevel()
-	{
-		this.save();
+		this.levels.save(this.id);
+		this.levelRegistry.save();
 	}
 	
 	setupCanvas($canvas, ctx)
 	{
-		$canvas.attr("width", 768);
-		$canvas.attr("height", 1280);
+		var width = this.registry[this.id].width * this.registry[this.id].scale;
+		var height = this.registry[this.id].height * this.registry[this.id].scale;
 		
-		$canvas.css("width", 768);
-		$canvas.css("height", 1280);
+		$canvas.attr("width", width);
+		$canvas.attr("height", height);
+		
+		$canvas.css("width", width);
+		$canvas.css("height", height);
 		
 		ctx.fillStyle="#FF0000";
-		ctx.fillRect(0,0,768,1280);
+		ctx.fillRect(0,0,width,height);
+	}
+	
+	setupFabric(fabric)
+	{
+		fabric.setBackgroundColor({source:config.cdn+"canvasBackgroundImage.png"}, fabric.renderAll.bind(fabric));
+	}
+	
+	createObject(objectId)
+	{
+		this.fabric.add(this.fabricParse.decode(objectId, this.registry[this.id].scale));
+	}
+	
+	decode(){
+		var output = {};
+		
+		this.fabric.forEachObject(function(obj){
+			
+			this.fabricParse.encode(obj);
+			//itterate over objects and write them to output. Will represent the level data
+			
+		}, this);
 	}
 }

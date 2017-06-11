@@ -38,6 +38,7 @@ class Enums {
 	
 	createNew(enumId)
 	{
+		enumId = enumId.toUpperCase();
 		if(this.enums[enumId] !== undefined){return;}
 		this._saveHistory();
 		this.enums[enumId] = {};

@@ -1,7 +1,19 @@
 <section class="tool-bar">
-	<button ng-click="levelEdit.update()" class="btn btn-default">Save</button>
+	<button ng-click="levelEdit.save()" class="btn btn-default">Save</button>
+	<div class="input-group">
+		<label>Width</label>
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control" ng-model="levelEdit.registry[levelEdit.id].width"/>
+	</div>
+	<div class="input-group">
+		<label>Height</label>
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control" ng-model="levelEdit.registry[levelEdit.id].height"/>
+	</div>
+	<div class="input-group">
+		<label>Scale</label>
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="levelEdit.registry[levelEdit.id].scale"/>
+	</div>
 	<ul  class="list-group">
-		<li class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
+		<li ng-click="levelEdit.createObject(objectId)" class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
 			<img ng-src="{{levelEdit.config.cdn}}objects/{{objectId}}.png"/>
 			<label>{{objectId}}</label>
 		</li>

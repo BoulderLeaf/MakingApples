@@ -1,69 +1,40 @@
 export default class CreatorController {
-	constructor($scope, github) {
+	constructor($scope, github, levelRegistry) {
 		this.github = github;
+		this.levelRegistry = levelRegistry;
+		
 		this.$scope = $scope;
 		
 		this.$scope.levels = [];
 		
-		this.get();
-		
 		this.data = {};
 		this.levels = [];
 		
-		this.data.levels = this.levels;
+		this.levelNameInput = "NewLevelName";
+		this.widthInput = 10;
+		this.heightInput = 10;
+		this.scale = 1;
+		
+		this.init();
 	}
 	
-	onLoad(response)
-	{
-		this.data = response.data;
-		this.levels = this.data.levels;
-
-		this.$scope.levels = this.levels;
-		this.$scope.$applyAsync();
-	}
-	
-	handleLoadError(error)
-	{
-		this.createLevels();
-	}
-	
-	createLevels()
-	{
-		this.save();
-	}
-	
-	handleCreationError(error)
-	{
-		console.error("Failed!", error);
+	init(){
+		this.levelRegistry.get().then(function(levels){
+			this.levels = levels;
+			this.levelNameInput = this.generateUniqueName();
+			this.$scope.$applyAsync();
+		}.bind(this));
 	}
 	
 	save()
 	{
-		this.github.put(
-			"levels.json",
-			JSON.stringify(this.data),
-			"Generating Levels Json Data",
-			this.saveComplete.bind(this),
-			this.handleCreationError.bind(this)
-		);
-	}
-	
-	get()
-	{
-		this.github.get("levels.json", this.onLoad.bind(this), this.handleLoadError.bind(this));
-	}
-	
-	saveComplete(e)
-	{
-		//Save Complete
+		this.levelRegistry.save();
 	}
 	
 	createNewLevel()
 	{
-		var name = this.generateUniqueName();
-		
-		this.data.levels.push({name:name, id:100});
-		
+		var name = this.levelNameInput;
+		this.levelRegistry.add(name, this.widthInput, this.heightInput, this.scale);
 		this.$scope.$applyAsync();
 	}
 	
@@ -71,12 +42,13 @@ export default class CreatorController {
 	{
 		var name = "NewLevel";
 		var instances = 0;
-		
-		this.data.levels.forEach(function(level, i){
-			instances+= level.name.slice(0, level.name.length - 3) === name &&
-				parseInt(level.name.slice(level.name.length - 3, level.name.length)) === instances
+
+		for(var levelId in this.levels)
+		{
+			instances+= levelId.slice(0, levelId.length - 3) === levelId &&
+				parseInt(levelId.slice(levelId.length - 3, levelId.length)) === instances
 				? 1:0;
-		}, this);
+		}
 		
 		var instanceString = instances.toString();
 		
