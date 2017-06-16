@@ -63,6 +63,12 @@
 							<button class="btn btn-default btn-warning" ng-disabled="enumEditor.interactionDisabled" ng-click="createObjects.deleteParam(objectId, paramId)" >Delete</button>
 						</span>
 					</div>
+					<div ng-if="param.type == createObjects.appleEnums.ObjectParamType.BOOLEAN"  class="input-group">
+						<input type="checkbox" ng-disabled="createObjects.interactionDisabled" class="form-control" ng-model="createObjects.inputs.objects[objectId].params[paramId].value" ng-change="createObjects.paramValueChange(objectId, paramId, this.value)"/>
+						<span class="input-group-btn">
+							<button class="btn btn-default btn-warning" ng-disabled="enumEditor.interactionDisabled" ng-click="createObjects.deleteParam(objectId, paramId)" >Delete</button>
+						</span>
+					</div>
 				</li>
 			</ul>
 		</form>

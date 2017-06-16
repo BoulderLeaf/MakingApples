@@ -2,7 +2,8 @@ export default {
 	ObjectParamType:{
 		ENUM:0,
 		STRING: 1,
-		NUMBER: 2
+		NUMBER: 2,
+		BOOLEAN: 3
 	},
 	FabricObjectTypes:{
 		LINE:0,
@@ -16,5 +17,12 @@ export default {
 		TEXT: 8,
 		IMAGE: 9,
 		PATH: 10
+	},
+	cdn:{
+		OBJECTS:"objects/"
+	},
+	FileTypes:{
+		JSON:".json",
+		PNG:".png"
 	}
 }

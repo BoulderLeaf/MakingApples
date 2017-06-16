@@ -23,6 +23,7 @@ class Enums {
 	
 	addValue(enumId, key, value)
 	{
+		key = key.toUpperCase();
 		if(this.enums[enumId] === undefined){return;}
 		if(this.enums[enumId][key] !== undefined){return;}
 		this._saveHistory();
@@ -38,7 +39,6 @@ class Enums {
 	
 	createNew(enumId)
 	{
-		enumId = enumId.toUpperCase();
 		if(this.enums[enumId] !== undefined){return;}
 		this._saveHistory();
 		this.enums[enumId] = {};

@@ -20,6 +20,7 @@ export default class LevelEditController
 		this.levelRegistry = levelRegistry;
 		this.objects = {};
 		this.registry = {};
+		this.level = {};
 		
 		this.$canvas  =$(".level-canvas");
 		this.ctx = this.$canvas[0].getContext('2d');
@@ -100,11 +101,26 @@ export default class LevelEditController
 	
 	createObject(objectId)
 	{
-		this.fabric.add(this.fabricParse.decode(objectId, this.registry[this.id].scale));
+		var fObj = this.fabricParse.decode(objectId, this.registry[this.id].scale, onObjLoaded.bind(this));
+		
+		function onObjLoaded()
+		{
+			fObj.center();
+			fObj.setCoords();
+			
+			this.fabric.calcOffset();
+			this.fabric.renderAll();
+		}
+		
+		this.fabric.add(fObj);
 	}
 	
 	decode(){
-		var output = {};
+		
+		var output = {
+			geometry:[],
+			objects:[]
+		};
 		
 		this.fabric.forEachObject(function(obj){
 			
