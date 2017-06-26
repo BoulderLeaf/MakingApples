@@ -1,14 +1,10 @@
 import angular from 'angular';
-import staticData from './StaticData.service';
 import GitHubApi from 'github-api';
 import config from "../../../config.js";
 
 class GitHub {
-	constructor(staticData)
+	constructor()
 	{
-		this.staticData = staticData;
-		this.dataRoot = config.dataRoot;
-		// basic auth
 		this.gh = new GitHubApi({
 			username: config.github.userName,
 			token: config.github.token
@@ -19,17 +15,17 @@ class GitHub {
 	}
 
 	init(){
+		
 	}
-	
 	
 	put(path, content, msg, done, error)
 	{
-		this.repo.writeFile(config.branch, this.dataRoot+path, content, "MakingApples GitHub.put: "+msg, {}).then(done, error);
+		this.repo.writeFile(config.branch, config.dataRoot+path, content, "MakingApples GitHub.put: "+msg, {}).then(done, error);
 	}
 
 	get(path, done, error)
 	{
-		this.repo.getContents(config.branch, this.dataRoot+path, true).then(done, error);
+		this.repo.getContents(config.branch, config.dataRoot+path, true).then(done, error);
 	}
 	
 	delete(path, cb)
@@ -46,6 +42,6 @@ class GitHub {
 	}
 }
 
-export default angular.module('services.github', [staticData])
+export default angular.module('services.github', [])
 	.service('github', GitHub)
 	.name;

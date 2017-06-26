@@ -132,6 +132,11 @@ class FabricParse {
 
 		return fabricObj;
 	}
+	
+	canEncode(fabricObj)
+	{
+		return JS.isValid(fabricObj.objectId);
+	}
 }
 
 export default angular.module('services.fabricParse', [creatorObjects])

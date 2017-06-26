@@ -5,6 +5,7 @@ var fabric = fabricWebpack.fabric;
 var LevelEditToolbar = require("./toolbar").default;
 import config from "../../../config";
 import Debug from "../../shared/utils/Debug";
+import JS from "../../shared/utils/JS";
 
 export default class LevelEditController
 {
@@ -24,6 +25,16 @@ export default class LevelEditController
 		
 		this.$canvas  =$(".level-canvas");
 		this.ctx = this.$canvas[0].getContext('2d');
+		
+		this.keyPresses = {};
+		
+		document.onkeydown = function (e) {
+			this.keyPresses[e.keyCode] = true;
+		}.bind(this);
+		
+		document.onkeyup = function (e) {
+			this.keyPresses[e.keyCode] = false;
+		}.bind(this);
 		
 		this._init();
 	}
@@ -108,6 +119,23 @@ export default class LevelEditController
 	setupFabric(fabric)
 	{
 		fabric.setBackgroundColor({source:config.cdn+"canvasBackgroundImage.png"}, fabric.renderAll.bind(fabric));
+		
+		var levelEntry = this.registry[this.id];
+		
+		var pxWidth = levelEntry.width * levelEntry.scale;
+		
+		var grid = pxWidth /  (levelEntry.width / 2);
+		
+		fabric.on('object:moving', function(options) {
+			
+			//Q
+			if(!JS.isValid(this.keyPresses[81]) || this.keyPresses[81] === false) { return; }
+
+			options.target.set({
+				left: Math.round(options.target.left / grid) * grid,
+				top: Math.round(options.target.top / grid) * grid
+			});
+		}.bind(this));
 	}
 	
 	createObject(objectId)
@@ -132,6 +160,8 @@ export default class LevelEditController
 		
 		var objects = this.level.objects;
 		var objCount = objects.length;
+		
+		this.generateGrid();
 		
 		function onObjLoaded(fObj)
 		{
@@ -158,10 +188,44 @@ export default class LevelEditController
 		
 		this.fabric.forEachObject(function(obj){
 			
+			if(!this.fabricParse.canEncode(obj)) {return;}
+			
 			output.push(this.fabricParse.encode(obj));
 			
 		}, this);
 		
 		return output;
+	}
+	
+	generateGrid(){
+		var levelEntry = this.registry[this.id];
+		
+		var pxWidth = levelEntry.width * levelEntry.scale;
+		var pxHeight = levelEntry.height * levelEntry.scale;
+		
+		var step = pxWidth /  (levelEntry.width / 2);
+		
+		var i =0;
+		
+		function generateLine(x1, y1, x2, y2)
+		{
+			var obj = obj = new fabric.Line(
+				[x1, y1, x2,y2],
+				{stroke:'red', selectable:false});
+
+			obj.setOpacity(0.25);
+			
+			return obj;
+		}
+		
+		for(i = step; i < pxWidth; i+= step)
+		{
+			this.fabric.add(generateLine(i, 0, i, pxHeight));
+		}
+		
+		for(i = step; i < pxHeight; i+= step)
+		{
+			this.fabric.add(generateLine(0, i, pxWidth, i));
+		}
 	}
 }

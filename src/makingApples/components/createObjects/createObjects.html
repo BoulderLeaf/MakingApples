@@ -9,9 +9,8 @@
 	<button ng-click="createObjects.save()" class="btn btn-primary pull-right" ng-disabled="createObjects.interactionDisabled" >Save</button>
 </nav>
 <section class="secondary-content">
-	<ul class="list-group">
-		<form ng-repeat="(objectId, object) in createObjects.objects" class="list-group-item">
-			<label><h4>{{objectId}}</h4></label>
+	<uib-accordion class="list-group">
+		<div uib-accordion-group ng-repeat="(objectId, object) in createObjects.objects" heading="{{objectId}}">
 			<button class="btn btn-default btn-warning pull-right" ng-disabled="enumEditor.interactionDisabled" ng-click="createObjects.deleteObject(objectId)" >Delete</button>
 			<img ng-src="{{createObjects.config.cdn}}objects/{{objectId}}.png"/>
 			<div class="input-group">
@@ -71,6 +70,6 @@
 					</div>
 				</li>
 			</ul>
-		</form>
-	</ul>
+		</div>
+	</uib-accordion>
 </section>

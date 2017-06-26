@@ -3,11 +3,9 @@
 	<button ng-click="enumEditor.createNew()" class="btn btn-default" ng-disabled="enumEditor.interactionDisabled" ><i class="glyphicon glyphicon-plus"></i></button>
 	<button ng-click="enumEditor.save()" class="btn btn-primary pull-right" ng-disabled="enumEditor.interactionDisabled" >Save</button>
 </nav>
-<ul class="list-group secondary-content enum-editor-content">
-	<li class="list-group-item" ng-repeat="enum in enumEditor.enumList" >
+<uib-accordion close-others="oneAtATime" class="secondary-content enum-editor-content">
+	<div uib-accordion-group class="list-group-item" heading="{{enum.id}}" ng-repeat="enum in enumEditor.enumList" >
 		<form>
-			
-			<label for="inlineFormInput"><h4>{{enum.id}}</h4></label>
 			<button class="btn btn-default pull-right btn-warning" ng-disabled="enumEditor.interactionDisabled" ng-click="enumEditor.deleteEnum(enum.id)" >Delete</button>
 			
 			<div class="input-group">
@@ -28,5 +26,5 @@
 				</div>
 			</form>
 		</ul>
-	</li>
-</ul>
+	</div>
+</uib-accordion>

@@ -7,7 +7,7 @@ export default {
 
 	github:{
 		userName:"PandeaGames",
-		token:"75d1305dbe86ce01507559f7ec0b86c538167f6c",
+		token:"9869a72c3633387380e51aec23b3ba3facd9b6c2",
 		repo:"MakingApples",
 		owner:"PandeaGamesOrganization"
 	},
