@@ -1,5 +1,5 @@
 export default class HomeController {
-	constructor($scope) {
+	constructor($scope, github) {
 		$scope.tabs = [
 			{name:"Home", state:"home"},
 			{name:"Edit Levels", state:"home.create"},

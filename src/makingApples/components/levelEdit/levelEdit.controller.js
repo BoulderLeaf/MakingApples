@@ -63,6 +63,8 @@ export default class LevelEditController
 		this.fabric = new fabric.Canvas('canvas');
 		this.setupFabric(this.fabric);
 		
+		this.decode();
+		
 		this.$scope.$applyAsync();
 	}
 	
@@ -75,8 +77,17 @@ export default class LevelEditController
 	
 	save()
 	{
-		this.levels.save(this.id);
-		this.levelRegistry.save();
+		this.level.objects = this.encode();
+		
+		this.levels.save(this.id).then(function(){
+			
+			this.levels.get(this.id).then(function(level){
+				this.level = level;
+				this.decode();
+				this.levelRegistry.save();
+			}.bind(this));
+			
+		}.bind(this));
 	}
 	
 	setupCanvas($canvas, ctx)
@@ -115,18 +126,42 @@ export default class LevelEditController
 		this.fabric.add(fObj);
 	}
 	
-	decode(){
+	decode()
+	{
+		this.fabric.clear();
 		
-		var output = {
-			geometry:[],
-			objects:[]
-		};
+		var objects = this.level.objects;
+		var objCount = objects.length;
+		
+		function onObjLoaded(fObj)
+		{
+			if(--objCount >0) { return; }
+			
+			this.fabric.calcOffset();
+			this.fabric.renderAll();
+		}
+		
+		objects.forEach(function(obj){
+			
+			var fObj = this.fabricParse.decode(obj.objectId, this.registry[this.id].scale, onObjLoaded.bind(this));
+			this.fabricParse.syncronize(fObj, obj);
+			fObj.setCoords();
+			this.fabric.add(fObj);
+			
+		}, this)
+	}
+	
+	encode()
+	{
+		
+		var output = [];
 		
 		this.fabric.forEachObject(function(obj){
 			
-			this.fabricParse.encode(obj);
-			//itterate over objects and write them to output. Will represent the level data
+			output.push(this.fabricParse.encode(obj));
 			
 		}, this);
+		
+		return output;
 	}
 }

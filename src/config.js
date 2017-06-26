@@ -1,12 +1,13 @@
 export default {
 	
 	dataRoot:"root/to/levels/",
-	ref:"refs/heads/master",
+	ref:"heads/master",
+	branch:"refs/heads/master",
 	cdn:"https://www.pandeagames.com/makingapplescdn/",
 
 	github:{
 		userName:"PandeaGames",
-		token:"60bbf17a71bdd0ac8aef83dd7a6a506664011e04",
+		token:"75d1305dbe86ce01507559f7ec0b86c538167f6c",
 		repo:"MakingApples",
 		owner:"PandeaGamesOrganization"
 	},

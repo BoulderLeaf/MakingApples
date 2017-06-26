@@ -96,17 +96,41 @@ class FabricParse {
 			if(JS.isValid(params.stroke)){fObj.setStroke(params.stroke.value)};
 			if(JS.isValid(params.strokeWidth)){fObj.setStrokeWidth(params.strokeWidth.value)};
 			
-			fObj.objDef = objDef;
+			fObj.objectId = objectId;
 		}
 		
 		return fObj;
 	}
-	encode(fabricObj){
+	encode(fabricObj)
+	{
+		var obj = {
+			objectId: fabricObj.objectId,
+			
+			x:fabricObj.left,
+			y:fabricObj.top,
+			width:fabricObj.getWidth(),
+			height:fabricObj.getHeight(),
+			angle:fabricObj.getAngle()
+		};
 		
+		return obj;
 	}
 	
-	syncronize(fabricObj, encodedObj){
+	syncronize(fabricObj, encodedObj)
+	{
+		var objDef = this.objects[encodedObj.objectId];
+		var params = objDef.params;
 		
+		fabricObj.setAngle(encodedObj.angle);
+		fabricObj.setLeft(encodedObj.x);
+		fabricObj.setTop(encodedObj.y);
+		
+		if(!JS.isValid(params.lockScaling) ||  params.lockScaling !== true){
+			fabricObj.setHeight(encodedObj.height);
+			fabricObj.setWidth(encodedObj.width);
+		}
+
+		return fabricObj;
 	}
 }
 

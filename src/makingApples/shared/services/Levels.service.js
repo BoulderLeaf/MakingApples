@@ -9,6 +9,7 @@ class Levels {
 		this.dir = "levels/";
 		this.levels = {};
 		this.history = [];
+		this.shaTable = {};
 	}
 	
 	_saveHistory()
@@ -51,16 +52,11 @@ class Levels {
 				resolve(this.levels);
 			}
 			
-			function onGenerateSuccess(response)
-			{
-				this.github.get(this._getFileUrl(id), onFetchSuccess.bind(this), reject);
-			}
-			
 			this.github.put(
 				this._getFileUrl(id),
 				JSON.stringify(this.levels[id]),
 				"Saving level registry",
-				onGenerateSuccess.bind(this),
+				onFetchSuccess.bind(this),
 				reject
 			);
 		}.bind(this));
@@ -72,6 +68,7 @@ class Levels {
 			
 			function onFetchSuccess(response)
 			{
+				this.shaTable[id] = response.sha;
 				this.levels[id] = response.data;
 				resolve(this.levels[id]);
 			}
