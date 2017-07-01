@@ -30,6 +30,7 @@ export default class LevelEditController
 		
 		document.onkeydown = function (e) {
 			this.keyPresses[e.keyCode] = true;
+			this._eOnKeyDown(e);
 		}.bind(this);
 		
 		document.onkeyup = function (e) {
@@ -226,6 +227,35 @@ export default class LevelEditController
 		for(i = step; i < pxHeight; i+= step)
 		{
 			this.fabric.add(generateLine(0, i, pxWidth, i));
+		}
+	}
+	
+	_eOnKeyDown(e)
+	{
+		switch(e.keyCode)
+		{
+			case 46:
+				//DELETE
+				this._deleteSelected();
+		}
+	}
+	
+	_deleteSelected()
+	{
+		
+		var activeObject = this.fabric.getActiveObject(), activeGroup = this.fabric.getActiveGroup();
+		
+		if (activeObject) 
+		{
+			this.fabric.remove(activeObject);
+		}
+		else if (activeGroup)
+		{
+			var objectsInGroup = activeGroup.getObjects();
+			this.fabric.discardActiveGroup();
+			objectsInGroup.forEach(function(object) {
+				this.fabric.remove(object);
+			});
 		}
 	}
 }
