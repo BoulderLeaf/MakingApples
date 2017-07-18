@@ -1,0 +1,17 @@
+{
+	"dataRoot":"root/to/levels/",
+	"ref":"heads/master",
+	"branch":"refs/heads/master",
+	"cdn":"https://www.pandeagames.com/makingapplescdn/",
+
+	"github":{
+		"userName":"PandeaGames",
+		"token":"5fce557c2145c52e357ffdfde467ebbecb247ff7",
+		"repo":"MakingApples",
+		"owner":"PandeaGamesOrganization"
+	},
+	
+	"fabric":{
+		"backgroundColor":"#ffffff"
+	}
+}

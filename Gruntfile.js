@@ -75,7 +75,9 @@ module.exports = function(grunt) {
         copy: {
             build: {
                 files: [
-                  {src: ['src/index.php'], dest: 'dist/index.php'}
+                  {src: ['src/index.php'], dest: 'dist/index.php'},
+                  {src: ['src/config.json'], dest: 'dist/config.json'},
+                  {cwd: 'src', expand: true,  src:['services/**'], dest: 'dist/'}
                 ]
             },
             development: {

@@ -12,13 +12,16 @@
 		<label>Scale</label>
 		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="levelEdit.registry[levelEdit.id].scale"/>
 	</div>
-	<ul  class="list-group">
-		<li ng-click="levelEdit.createObject(objectId)" class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
-			<img ng-src="{{levelEdit.config.cdn}}objects/{{objectId}}.png"/>
-			<label>{{objectId}}</label>
+	<div class="input-group">
+		<label>AppleCount</label>
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="levelEdit.registry[levelEdit.id].appleCount"/>
+	</div>
+	<ul class="list-group tool-objects">
+		<li tooltip-placement="top" uib-tooltip="{{objectId}}" ng-click="levelEdit.createObject(objectId)" class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
+			<img ng-src="{{levelEdit.appConfig.cdn}}objects/{{objectId}}.png"/>
 		</li>
 	</ul>
 </section>
-<section class="canvas-container">
+<section class="fabric-canvas-container">
 	<canvas id="canvas" class="level-canvas"></canvas>
 </section>

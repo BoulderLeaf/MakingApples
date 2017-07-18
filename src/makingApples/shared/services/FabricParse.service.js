@@ -3,13 +3,15 @@ import enums from "../../../enums.js";
 import creatorObjects from "../../shared/services/CreatorObjects.service";
 import Debug from "../../shared/utils/Debug";
 import JS from "../../shared/utils/JS";
-import config from "../../../config";
+import config from "./Config.service";
 
 class FabricParse {
-	constructor(creatorObjects)
+	constructor(creatorObjects, config)
 	{
 		this.creatorObjects = creatorObjects;
 		this.objects = {};
+		this.config = config;
+		this.appConfig = null;
 		this.init();
 	}
 	
@@ -17,6 +19,10 @@ class FabricParse {
 	{
 		this.creatorObjects.getObjects().then(function(objects){
 			this.objects = objects;
+		}.bind(this));
+		
+		this.config.get().then(function(appConfig) {
+			this.appConfig = appConfig;
 		}.bind(this));
 	}
 	
@@ -56,7 +62,7 @@ class FabricParse {
 					if(JS.isValid(cb)) {cb.call();}
 				}
 				
-				var src = config.cdn + enums.cdn.OBJECTS+ objectId + enums.FileTypes.PNG;
+				var src = this.appConfig.cdn + enums.cdn.OBJECTS+ objectId + enums.FileTypes.PNG;
 				fObj.setSrc(src, loadComplete);
 				
 				break;
@@ -101,33 +107,33 @@ class FabricParse {
 		
 		return fObj;
 	}
-	encode(fabricObj)
+	encode(fabricObj, scale)
 	{
 		var obj = {
 			objectId: fabricObj.objectId,
 			
-			x:fabricObj.left,
-			y:fabricObj.top,
-			width:fabricObj.getWidth(),
-			height:fabricObj.getHeight(),
+			x:fabricObj.left  / scale,
+			y:fabricObj.top / scale,
+			width:fabricObj.getWidth() / scale,
+			height:fabricObj.getHeight() / scale,
 			angle:fabricObj.getAngle()
 		};
 		
 		return obj;
 	}
 	
-	syncronize(fabricObj, encodedObj)
+	syncronize(fabricObj, encodedObj, scale)
 	{
 		var objDef = this.objects[encodedObj.objectId];
 		var params = objDef.params;
 		
 		fabricObj.setAngle(encodedObj.angle);
-		fabricObj.setLeft(encodedObj.x);
-		fabricObj.setTop(encodedObj.y);
+		fabricObj.setLeft(encodedObj.x * scale);
+		fabricObj.setTop(encodedObj.y * scale);
 		
 		if(!JS.isValid(params.lockScaling) ||  params.lockScaling !== true){
-			fabricObj.setHeight(encodedObj.height);
-			fabricObj.setWidth(encodedObj.width);
+			fabricObj.setHeight(encodedObj.height * scale);
+			fabricObj.setWidth(encodedObj.width * scale);
 		}
 
 		return fabricObj;
@@ -139,6 +145,6 @@ class FabricParse {
 	}
 }
 
-export default angular.module('services.fabricParse', [creatorObjects])
+export default angular.module('services.fabricParse', [creatorObjects, config])
 	.service('fabricParse', FabricParse)
 	.name;

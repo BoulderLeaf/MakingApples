@@ -1,17 +1,25 @@
+@toolbarWidth: 14rem;
+
+.tool-bar{
+	.fill-parent(@right: initial);
+
+	width: 14rem;
+	overflow-y: auto;
+	z-index:1;
+
+	background-color: @gray;
+}
+
+.tool-objects li img{
+	width: 100%;
+	height: auto;
+}
+
 .creator-content{
-	.tool-bar{
-		position: absolute;
-		right:0;
-		width: 14rem;
-		bottom:@padding-base-vertical*2;
-		top:@padding-base-vertical * 2;
-		overflow-y: auto;
-		z-index:1;
-		
-		background-color: @gray;
-	}
-	.canvas-container{
-		.fill-parent();
+	
+	.fabric-canvas-container{
+		.fill-parent(@left: @toolbarWidth+1rem, @right:1rem, @bottom:1rem);
+		overflow: auto;
 	}
 	canvas{
 		margin:@padding-base-vertical*2 auto;

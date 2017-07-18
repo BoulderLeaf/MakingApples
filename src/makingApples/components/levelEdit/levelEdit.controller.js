@@ -3,18 +3,18 @@ import enums from "../../../enums";
 import fabricWebpack from "fabric-webpack";
 var fabric = fabricWebpack.fabric;
 var LevelEditToolbar = require("./toolbar").default;
-import config from "../../../config";
 import Debug from "../../shared/utils/Debug";
 import JS from "../../shared/utils/JS";
 
 export default class LevelEditController
 {
-	constructor($scope, $stateParams, enums, creatorObjects, fabricParse, levels, levelRegistry)
+	constructor($scope, $stateParams, enums, creatorObjects, fabricParse, levels, levelRegistry, config)
 	{
 		this.id = $stateParams.levelId;
 		this.$scope = $scope;
 		this.$scope.id = this.id;
 		this.config = config;
+		this.appConfig = null;
 		this.fabricParse = fabricParse;
 		this.creatorObjects = creatorObjects;
 		this.levels = levels;
@@ -42,7 +42,7 @@ export default class LevelEditController
 	
 	_init()
 	{
-		var fetchCount = 3;
+		var fetchCount = 5;
 		
 		function onComplete()
 		{
@@ -64,6 +64,16 @@ export default class LevelEditController
 		
 		this.levels.get(this.id).then(function(level){
 			this.level = level;
+			onComplete.call(this);
+		}.bind(this));
+		
+		this.levels.get(this.id).then(function(level){
+			this.level = level;
+			onComplete.call(this);
+		}.bind(this));
+		
+		this.config.get().then(function(appConfig){
+			this.appConfig = appConfig;
 			onComplete.call(this);
 		}.bind(this));
 	}
@@ -119,13 +129,29 @@ export default class LevelEditController
 	
 	setupFabric(fabric)
 	{
-		fabric.setBackgroundColor({source:config.cdn+"canvasBackgroundImage.png"}, fabric.renderAll.bind(fabric));
+		var img = new Image();
+		img.src = this.appConfig.cdn+this.id+enums.FileTypes.PNG;
+		
+		var bgOptions = {
+			width:fabric.getWidth(),
+			height:fabric.getHeight(),
+			originX: 'left',
+			riginY: 'top'
+		};
+		
+		img.addEventListener(enums.Event.LOAD, function(){
+			fabric.setBackgroundImage(img.src, fabric.renderAll.bind(fabric), bgOptions);
+		}.bind(this));
+		
+		img.addEventListener(enums.Event.ERROR, function(){
+			fabric.setBackgroundImage(this.appConfig.cdn+"canvasBackgroundImage.png", fabric.renderAll.bind(fabric), bgOptions);
+		}.bind(this));
 		
 		var levelEntry = this.registry[this.id];
 		
 		var pxWidth = levelEntry.width * levelEntry.scale;
 		
-		var grid = pxWidth /  (levelEntry.width / 2);
+		var grid = pxWidth /  (levelEntry.width);
 		
 		fabric.on('object:moving', function(options) {
 			
@@ -157,6 +183,8 @@ export default class LevelEditController
 	
 	decode()
 	{
+		var levelEntry = this.registry[this.id];
+		
 		this.fabric.clear();
 		
 		var objects = this.level.objects;
@@ -174,8 +202,8 @@ export default class LevelEditController
 		
 		objects.forEach(function(obj){
 			
-			var fObj = this.fabricParse.decode(obj.objectId, this.registry[this.id].scale, onObjLoaded.bind(this));
-			this.fabricParse.syncronize(fObj, obj);
+			var fObj = this.fabricParse.decode(obj.objectId, levelEntry.scale, onObjLoaded.bind(this));
+			this.fabricParse.syncronize(fObj, obj, levelEntry.scale);
 			fObj.setCoords();
 			this.fabric.add(fObj);
 			
@@ -185,13 +213,15 @@ export default class LevelEditController
 	encode()
 	{
 		
+		var levelEntry = this.registry[this.id];
+		
 		var output = [];
 		
 		this.fabric.forEachObject(function(obj){
 			
 			if(!this.fabricParse.canEncode(obj)) {return;}
 			
-			output.push(this.fabricParse.encode(obj));
+			output.push(this.fabricParse.encode(obj, levelEntry.scale));
 			
 		}, this);
 		

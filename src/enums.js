@@ -24,5 +24,9 @@ export default {
 	FileTypes:{
 		JSON:".json",
 		PNG:".png"
+	},
+	Event:{
+		LOAD:"load",
+		ERROR:"error"
 	}
 }

@@ -1,6 +1,5 @@
 import angular from 'angular';
 import github from "./GitHub.service";
-import config from "../../../config.js";
 
 class Levels {
 	constructor(github)

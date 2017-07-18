@@ -1,6 +1,5 @@
 import angular from 'angular';
 import github from "./GitHub.service";
-import config from "../../../config.js";
 
 class LevelRegistry {
 	constructor(github)
@@ -28,7 +27,8 @@ class LevelRegistry {
 		this.levels[id]= {
 			width:width,
 			height:height,
-			scale:scale
+			scale:scale,
+			appleCount:0
 		};
 	}
 	
