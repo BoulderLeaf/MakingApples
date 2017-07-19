@@ -20,7 +20,7 @@ class Config {
 			}
 			else
 			{
-				this.$http.get(this.$location.path() + "/../dist/services/readConfig.php")
+				this.$http.get("makingapples/services/readConfig.php")
 					.then(function(response){
 					
 					this.config = response.data;
