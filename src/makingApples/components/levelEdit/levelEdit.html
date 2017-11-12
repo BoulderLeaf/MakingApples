@@ -16,6 +16,10 @@
 		<label>AppleCount</label>
 		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="levelEdit.registry[levelEdit.id].appleCount"/>
 	</div>
+	<div class="input-group">
+		<label>Par</label>
+		<input type="number" ng-disabled="creator.interactionDisabled" class="form-control pull-right" ng-model="levelEdit.registry[levelEdit.id].par"/>
+	</div>
 	<ul class="list-group tool-objects">
 		<li tooltip-placement="top" uib-tooltip="{{objectId}}" ng-click="levelEdit.createObject(objectId)" class="list-group-item" ng-repeat="(objectId, object) in levelEdit.objects">
 			<img ng-src="{{levelEdit.appConfig.cdn}}objects/{{objectId}}.png"/>
