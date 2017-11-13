@@ -63,7 +63,7 @@ class FabricParse {
 				}
 				
 				var src = this.appConfig.cdn + enums.cdn.OBJECTS+ objectId + enums.FileTypes.PNG;
-				fObj.setSrc(src, loadComplete);
+				fObj.setSrc(src, loadComplete, {crossOrigin:"Anonymous"});
 				
 				break;
 				

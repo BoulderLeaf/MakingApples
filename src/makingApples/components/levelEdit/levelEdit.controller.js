@@ -127,24 +127,26 @@ export default class LevelEditController
 		ctx.fillRect(0,0,width,height);
 	}
 	
-	setupFabric(fabric)
+	setupFabric(fabricCanvas)
 	{
 		var img = new Image();
+		img.crossOrigin = "Anonymous";
 		img.src = this.appConfig.cdn+this.id+enums.FileTypes.PNG;
 		
 		var bgOptions = {
-			width:fabric.getWidth(),
-			height:fabric.getHeight(),
+			width:fabricCanvas.getWidth(),
+			height:fabricCanvas.getHeight(),
 			originX: 'left',
-			riginY: 'top'
+			riginY: 'top',
+			crossOrigin:"Anonymous"
 		};
 		
 		img.addEventListener(enums.Event.LOAD, function(){
-			fabric.setBackgroundImage(img.src, fabric.renderAll.bind(fabric), bgOptions);
+			fabricCanvas.setBackgroundImage(img.src, fabricCanvas.renderAll.bind(fabricCanvas), bgOptions);
 		}.bind(this));
 		
 		img.addEventListener(enums.Event.ERROR, function(){
-			fabric.setBackgroundImage(this.appConfig.cdn+"canvasBackgroundImage.png", fabric.renderAll.bind(fabric), bgOptions);
+			fabricCanvas.setBackgroundImage(this.appConfig.cdn+"canvasBackgroundImage.png", fabricCanvas.renderAll.bind(fabricCanvas), bgOptions);
 		}.bind(this));
 		
 		var levelEntry = this.registry[this.id];
@@ -153,7 +155,7 @@ export default class LevelEditController
 		
 		var grid = pxWidth /  (levelEntry.width);
 		
-		fabric.on('object:moving', function(options) {
+		fabricCanvas.on('object:moving', function(options) {
 			
 			//Q
 			if(!JS.isValid(this.keyPresses[81]) || this.keyPresses[81] === false) { return; }
@@ -258,6 +260,11 @@ export default class LevelEditController
 		{
 			this.fabric.add(generateLine(0, i, pxWidth, i));
 		}
+	}
+	
+	downloadCanvas(event) {
+		event.currentTarget.href = this.$canvas.get(0).toDataURL();
+		event.currentTarget.download = this.id+enums.FileTypes.PNG;
 	}
 	
 	_eOnKeyDown(e)
